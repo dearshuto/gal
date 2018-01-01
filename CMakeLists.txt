@@ -1,4 +1,4 @@
-PROJECT(UtahTeapod)
+PROJECT(GeometryAlgorithmLibrary)
 cmake_minimum_required(VERSION 3.0)
 
 ## 実行ファイルの出力ディレクトリの設定
@@ -9,6 +9,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
 link_directories(${CMAKE_SOURCE_DIR}/lib)
 
+## インクルードディレクトリの設定
+include_directories(${CMAKE_SOURCE_DIR}/include)
 
 ## プロジェクトに含むソースコードのトラッキング
 FILE(GLOB_RECURSE ALL_FILES
@@ -21,10 +23,6 @@ foreach(FILE ${ALL_FILES})
   # skip src or include and changes /'s to \\'s
   string(REGEX REPLACE "(\\./)?(src|include)/?" "" GROUP "${PARENT_DIR}")
   string(REPLACE "/" "\\" GROUP "${GROUP}")
-
-  # group into "Source Files" and "Header Files"
-  set(GROUP "Source Files\\${GROUP}")
-
   source_group("${GROUP}" FILES "${FILE}")
 endforeach()
 
@@ -32,6 +30,8 @@ endforeach()
 # C++11を有効にする
 add_definitions("-Wall -std=c++11")
 
-add_executable(test_test
-	sample/main.cpp
+add_library(gal STATIC
+	${ALL_FILES}
 )
+
+add_subdirectory(sample)
