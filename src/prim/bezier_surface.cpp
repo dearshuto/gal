@@ -78,15 +78,18 @@ void gal::BezierSurface::update(const std::uint32_t div, std::uint32_t subDiv)
         }
     }
     
-    // 四角ポリゴンとして登録。
+    // 三角ポリゴンとして登録。
     for (std::uint32_t n = 0; n < kN-1; ++n){
         for (std::uint32_t m = 0; m <kM-1; ++m)
         {
             const int kLeftUp = n + m*kN;
             m_indices.push_back(kLeftUp);
-            m_indices.push_back(kLeftUp+1);
             m_indices.push_back(kLeftUp + kN + 1);
             m_indices.push_back(kLeftUp + kN);
+            
+            m_indices.push_back(kLeftUp);
+            m_indices.push_back(kLeftUp+1);
+            m_indices.push_back(kLeftUp + kN + 1);
         }
     }
 }

@@ -31,9 +31,9 @@ int main(int argc, const char * argv[])
     
     // 面情報の書き出し
     auto& indicesData = utahTeapot.getIndices();
-    for (std::uint32_t i = 0; i < indicesData.size(); i+=4)
+    for (std::uint32_t i = 0; i < indicesData.size(); i+=3)
     {
-        obj << "f " << indicesData[i]+1 << " " << indicesData[i+1]+1 << " " << indicesData[i+2]+1 << " " << indicesData[i+3]+1 << std::endl;
+        obj << "f " << indicesData[i]+1 << " " << indicesData[i+1]+1 << " " << indicesData[i+2]+1 << std::endl;
     }
     
     return 0;

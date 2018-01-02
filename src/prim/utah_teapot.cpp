@@ -362,6 +362,9 @@ constexpr std::array<std::array<float, 3>, 306> g_vertices = {{
 
 void gal::UtahTeapot::update(const std::uint64_t div, const std::uint64_t subDiv)
 {
+    // 各部位ごとにベジエ曲面を生成し、つなぎあわせてティーポットを構成します。
+    // TODO: ベジエ曲面上で制御点と一致する頂点はだぶりがあるので、それを解消する
+    
     int indexStride = 0;
     for (const Bezier16IndicesArray& bezierIndiices: g_indices)
     {
@@ -382,13 +385,13 @@ void gal::UtahTeapot::update(const std::uint64_t div, const std::uint64_t subDiv
             m_vertices.push_back(kVertex.Position.Z);
         }
         
+        // 3角ポリゴンとして登録
         const std::vector<uint64_t>& kIndeces = bezier.getMeshInices();
-        for (std::uint64_t i = 0; i < kIndeces.size(); i+=4)
+        for (std::uint64_t i = 0; i < kIndeces.size(); i+=3)
         {
             m_indices.push_back(indexStride + i+0);
             m_indices.push_back(indexStride + i+1);
             m_indices.push_back(indexStride + i+2);
-            m_indices.push_back(indexStride + i+3);
         }
         indexStride += kIndeces.size();
     }
