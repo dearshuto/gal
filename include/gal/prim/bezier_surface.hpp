@@ -18,7 +18,7 @@
 namespace gal {
     
     //! @brief 16 個の制御点から生成される 3 次ベジエ曲面
-    //! @brief 生成されるメッシュデータは四角ポリゴンで構成されています。
+    //! @brief 生成されるメッシュデータは 3 角ポリゴンで構成されています。
     class BezierSurface : public gal::Surface
     {
     public:
@@ -26,7 +26,7 @@ namespace gal {
         virtual~BezierSurface() = default;
         
         //! @brief ベジエ曲面の分割数を更新します。
-        //! @detail 分割数を 0 で更新すると四角メッシュを生成します。
+        //! @detail 分割数を 0 で更新すると4角形を生成します。
         //! @param[in] div 横方向の分割数
         //! @param[in] subDiv 縦方向の分割数
         //! @note 分割数の限界は未確認です。どこかでオーバーフローが発生します。
