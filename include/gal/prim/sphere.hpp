@@ -20,6 +20,9 @@ namespace gal
         ~Sphere() = default;
         
         //! @brief 指定された分割数で球体のメッシュを生成します。
+        //! @param[in] div z 軸周りの分割数
+        //! @param[in] subDiv z 軸方向の分割数
+        //! @pre 3 <= div, 3 <= subDiv, これより分割数を減らすと体積が 0 になってしまうためです。
         void update(const std::uint32_t div, const std::uint32_t subDiv);
     };
 }

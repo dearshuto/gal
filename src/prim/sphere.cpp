@@ -5,12 +5,15 @@
 //  Created by Shuto Shikama on 2018/01/04.
 //
 
+#include <cassert>
 #include <cmath>
 #include <math.h>
 #include <gal/prim/sphere.hpp>
 
 void gal::Sphere::update(const std::uint32_t div, const std::uint32_t subDiv)
 {
+    assert((3 <= div) && (3 <= subDiv));
+    
     const float kRadius = 0.5f;
     const float kRadian = 2.0f * M_PI / static_cast<float>(div);
     const float kRradianZ = M_PI / static_cast<float>(subDiv);
