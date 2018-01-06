@@ -50,6 +50,8 @@ namespace gal
         std::vector<std::uint32_t>& getIndices(){ return m_indices; }
         
     protected:
+        void makeHalfedge(const std::vector<std::uint32_t>& indices);
+    protected:
         std::vector<Halfedge> m_halfedges;
         std::vector<Face> m_faces;
         std::vector<Vertex> m_vertice;

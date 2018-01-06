@@ -18,6 +18,9 @@ void gal::Sphere::update(const std::uint32_t div, const std::uint32_t subDiv)
     const float kRadian = 2.0f * M_PI / static_cast<float>(div);
     const float kRradianZ = M_PI / static_cast<float>(subDiv);
     
+    m_vertice.reserve(div * (subDiv-1) + 2/*北極と南極の分*/);
+    m_vertices.reserve(div * (subDiv-1) + 2/*北極と南極の分*/);
+    
     for (std::uint32_t m = 1; m < subDiv; ++m)
     {
         const float kZ = kRadius * std::cos(m * kRradianZ);
@@ -91,4 +94,6 @@ void gal::Sphere::update(const std::uint32_t div, const std::uint32_t subDiv)
     m_indices.push_back(m_vertices.size()/3 - 1);
     m_indices.push_back(m_vertices.size()/3 - 4 - (div-2));
     m_indices.push_back(m_vertices.size()/3 - 3 - 0);
+    
+    makeHalfedge(m_indices);
 }
