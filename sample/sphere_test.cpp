@@ -9,24 +9,23 @@
 #include <fstream>
 #include <gal/prim/sphere.hpp>
 
-//! @brief ユタ・ティーポット を書き出すサンプル兼テストです。
+//! @brief 球を生成して書き出すサンプル兼テストです。
 //! @detail
-//! ユタ・ティーポット を作成して Wavefront OBJ 形式で書き出します。
-//! 書き出したモデルを一般的なモデルビューワで読み込むとティーポットが表示されます。
+//! 球を作成して Wavefront OBJ 形式で書き出します。
+//! 書き出したモデルを一般的なモデルビューワで読み込むと球が表示されます。
 int main(int argc, const char * argv[])
 {
-    // ユタ・ティーポットの各ベジエ曲面を 10x10 に分割して生成します。
+    // 球を 50x50 に分割して生成します。
     gal::Sphere sphere;
-    sphere.update(4, 4);
+    sphere.update(50 , 50);
     
-    // テキストで書き出します。
-    std::ofstream obj{"sphere_10x10.obj"};
+    std::ofstream obj{"sphere_50x50.obj"};
     
     // 頂点情報の書き出し
     auto& vertexData = sphere.getVertices();
     for (std::uint32_t i = 0; i < vertexData.size(); i+=3)
     {
-        obj << "v " << vertexData[i] << " " << vertexData[i+1] << " " << vertexData[i+2]*1.25 << std::endl;
+        obj << "v " << vertexData[i] << " " << vertexData[i+1] << " " << vertexData[i+2] << std::endl;
     }
     
     // 面情報の書き出し

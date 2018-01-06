@@ -46,4 +46,46 @@ void gal::Sphere::update(const std::uint32_t div, const std::uint32_t subDiv)
             m_indices.push_back(kLeftUp + kNextColumn);
         }
     }
+    
+    // 周回
+    for (std::uint32_t m = 0; m < subDiv-2; ++m)
+    {
+        m_indices.push_back(m * div);
+        m_indices.push_back((m+1)*div - 1);
+        m_indices.push_back((m+1)*div);
+        
+        m_indices.push_back((m+1) * div -1);
+        m_indices.push_back((m+2) * div -1);
+        m_indices.push_back((m+1) * div);
+    }
+    
+    // 北極
+    m_vertices.push_back(0.0f);
+    m_vertices.push_back(0.0f);
+    m_vertices.push_back(kRadius);
+
+    for (std::uint32_t n = 0; n < div-1; ++n)
+    {
+        m_indices.push_back(m_vertices.size()/3-1);
+        m_indices.push_back(n);
+        m_indices.push_back(n+1);
+    }
+    m_indices.push_back(m_vertices.size()/3-1);
+    m_indices.push_back(div-2+1);
+    m_indices.push_back(0);
+
+    // 南極
+    m_vertices.push_back(0.0f);
+    m_vertices.push_back(0.0f);
+    m_vertices.push_back(-kRadius);
+    for (std::uint32_t n = 0; n < div-1; ++n)
+    {
+        m_indices.push_back(m_vertices.size()/3 - 1);
+        m_indices.push_back(m_vertices.size()/3 - 3 - n);
+        m_indices.push_back(m_vertices.size()/3 - 4 - n);
+    }
+    
+    m_indices.push_back(m_vertices.size()/3 - 1);
+    m_indices.push_back(m_vertices.size()/3 - 4 - (div-2));
+    m_indices.push_back(m_vertices.size()/3 - 3 - 0);
 }
