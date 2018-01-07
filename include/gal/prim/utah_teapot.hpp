@@ -15,6 +15,8 @@
 
 namespace gal
 {
+namespace prim
+{
     //! @brief 3角ポリゴンで構成されるユタティーポッドのメッシュです。
     //! @detail
     //! 注ぎ口が x 軸, ふたが z 軸方向のモデルが生成されます。
@@ -29,9 +31,9 @@ namespace gal
         
         //! @brief 指定した分割数でメッシュを構築します。
         //! @detail Martin Newell がモデリングしたベジエ曲面の制御点からメッシュを抽出しています。
-        void update(const std::uint64_t div, const std::uint64_t subDiv);        
+        void update(const std::uint64_t div, const std::uint64_t subDiv);
     };
-
+}
 }
 
 #endif /* utah_teapot_hpp */

@@ -361,7 +361,7 @@ constexpr std::array<std::array<float, 3>, 306> g_vertices = {{
     {1.425,-0.798,0.0}
 }};
 
-void gal::UtahTeapot::update(const std::uint64_t div, const std::uint64_t subDiv)
+void gal::prim::UtahTeapot::update(const std::uint64_t div, const std::uint64_t subDiv)
 {
     // 各部位ごとにベジエ曲面を生成し、つなぎあわせてティーポットを構成します。
     // TODO: ベジエ曲面上で制御点と一致する頂点はだぶりがあるので、それを解消する
@@ -371,11 +371,11 @@ void gal::UtahTeapot::update(const std::uint64_t div, const std::uint64_t subDiv
     std::vector<std::uint32_t> indices(0);
     for (const Bezier16IndicesArray& bezierIndiices: g_indices)
     {
-        gal::BezierSurface bezier;
+        BezierSurface bezier;
         for (int i = 0; i < bezierIndiices.size(); i++)
         {
             const auto& kVertex = g_vertices[bezierIndiices[i]-1];
-            bezier.getControllPoint(i) = gal::Vector{kVertex[0], kVertex[1], kVertex[2]};
+            bezier.getControllPoint(i) = gal::util::Vector{kVertex[0], kVertex[1], kVertex[2]};
         }
         
         bezier.update(div, subDiv);

@@ -16,7 +16,7 @@
 //! 書き出したモデルを一般的なモデルビューワで読み込むとティーポットが表示されます。
 int main(int argc, const char * argv[])
 {
-    gal::BezierSurface bezier;
+    gal::prim::BezierSurface bezier;
     bezier.getControllPoint(0) = {0.0f, 0.0f, 0.0f};
     bezier.getControllPoint(1) = {0.33f, 0.0f, 0.2f};
     bezier.getControllPoint(2) = {0.66f, 0.0f, 0.4f};

@@ -18,7 +18,7 @@
 int main(int argc, const char * argv[])
 {
     // 球を 50x50 に分割して生成します。
-    gal::Cube cube;
+    gal::prim::Cube cube;
     
     gal::util::SaveObjToFile(cube, "cube.obj");
     

@@ -7,12 +7,12 @@
 
 #include <gal/prim/cube.hpp>
 
-gal::Cube::Cube()
+gal::prim::Cube::Cube()
 {
     initialize();
 }
 
-void gal::Cube::initialize()
+void gal::prim::Cube::initialize()
 {
     std::vector<float> vertices;
     // 上半分

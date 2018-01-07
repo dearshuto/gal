@@ -16,7 +16,8 @@
 #include <gal/util/vector.hpp>
 
 namespace gal {
-    
+namespace prim
+{
     //! @brief 16 個の制御点から生成される 3 次ベジエ曲面
     //! @brief 生成されるメッシュデータは 3 角ポリゴンで構成されています。
     class BezierSurface : public gal::ds::Surface
@@ -46,11 +47,11 @@ namespace gal {
         //! v  4---5---6---7
         //!    8---9---10--11
         //!    12--13--14--15
-        gal::Vector& getControllPoint(const uint8_t index)
+        gal::util::Vector& getControllPoint(const uint8_t index)
         {
             return m_controllPoints[index];
         }
-                        
+        
     private:
         
         /* 制御点の順番はこんな感じ
@@ -59,8 +60,9 @@ namespace gal {
          8---9---10--11
          12--13--14--15
          */
-        std::array<gal::Vector, 16> m_controllPoints;
+        std::array<gal::util::Vector, 16> m_controllPoints;
     };
+}
 }
 
 #endif /* bezier_surface_hpp */

@@ -12,7 +12,7 @@
 #include <gal/util/factorial.h>
 #include <gal/prim/bezier_surface.hpp>
 
-void gal::BezierSurface::update(const std::uint32_t div, std::uint32_t subDiv)
+void gal::prim::BezierSurface::update(const std::uint32_t div, std::uint32_t subDiv)
 {
     // ベジエ曲面上の UV 座標を表す構造体。
     // UV なので 値は [0, 1] の範囲です。
@@ -69,10 +69,10 @@ void gal::BezierSurface::update(const std::uint32_t div, std::uint32_t subDiv)
             for (int i = 0; i < 4; ++i) {
                 for (int j = 0; j < 4; ++j)
                 {
-                    const gal::Vector& kControlPoint = getControllPoint(i + 4*j);
+                    const gal::util::Vector& kControlPoint = getControllPoint(i + 4*j);
                     const float kBu = ComputeBernsteinPolynormal(kU, i);
                     const float kBv = ComputeBernsteinPolynormal(kV, j);
-                    const gal::Vector kResult =kBu * kBv * kControlPoint;
+                    const gal::util::Vector kResult =kBu * kBv * kControlPoint;
                     position[0] += kResult.X;
                     position[1] += kResult.Y;
                     position[2] += kResult.Z;
@@ -99,7 +99,7 @@ void gal::BezierSurface::update(const std::uint32_t div, std::uint32_t subDiv)
     makeHalfedge(vertices, indices);
 }
 
-float gal::BezierSurface::ComputeBernsteinPolynormal(const float t, std::uint32_t i )
+float gal::prim::BezierSurface::ComputeBernsteinPolynormal(const float t, std::uint32_t i )
 {
     assert(0 <= t && t <= 1);
     assert(0 <= i && i <= 3); // 3次なので

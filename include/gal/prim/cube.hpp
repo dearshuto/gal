@@ -1,8 +1,8 @@
-//
-//  cube.hpp
 //  gal
-//
-//  Created by Shuto Shikama on 2018/01/06.
+//! @file cube.hpp
+//! @brief キューブを提供します。
+//! @author Shuto Shikama
+//! @date 2018/01/06.
 //
 
 #ifndef cube_hpp
@@ -11,6 +11,8 @@
 #include <gal/ds//surface.hpp>
 
 namespace gal
+{
+namespace prim
 {
     //! @brief 中心が原点で1辺の長さが1のキューブ
     class Cube : public gal::ds::Surface
@@ -24,6 +26,7 @@ namespace gal
         //! @brief コンストラクタのなかで使用されます。
         void initialize();
     };
+}
 }
 
 #endif /* cube_hpp */

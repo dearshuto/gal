@@ -10,7 +10,12 @@
 #include <math.h>
 #include <gal/prim/sphere.hpp>
 
-void gal::Sphere::update(const std::uint32_t div, const std::uint32_t subDiv)
+gal::prim::Sphere::Sphere()
+{
+    update(20, 20);
+}
+
+void gal::prim::Sphere::update(const std::uint32_t div, const std::uint32_t subDiv)
 {
     assert((3 <= div) && (3 <= subDiv));
     

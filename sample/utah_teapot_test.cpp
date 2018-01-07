@@ -17,7 +17,7 @@
 int main(int argc, const char * argv[])
 {
     // ユタ・ティーポットの各ベジエ曲面を 10x10 に分割して生成します。
-    gal::UtahTeapot utahTeapot;
+    gal::prim::UtahTeapot utahTeapot;
     utahTeapot.update(10, 10);
     
     gal::util::SaveObjToFile(utahTeapot, "utah_teapot_10x10.obj");

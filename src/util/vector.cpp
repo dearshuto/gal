@@ -7,31 +7,31 @@
 
 #include <gal/util/vector.hpp>
 
-gal::Vector::Vector(const float x, const float y, const float z)
+gal::util::Vector::Vector(const float x, const float y, const float z)
 : X(x), Y(y), Z(z)
 {
     
 }
 
-gal::Vector gal::Vector::operator+(const gal::Vector &other)const
+gal::util::Vector gal::util::Vector::operator+(const gal::util::Vector &other)const
 {
-    return gal::Vector{
+    return gal::util::Vector{
         this->X + other.X,
         this->Y + other.Y,
         this->Z + other.Z
     };
 }
 
-gal::Vector gal::Vector::operator-(const gal::Vector &other)const
+gal::util::Vector gal::util::Vector::operator-(const gal::util::Vector &other)const
 {
-    return gal::Vector{
+    return gal::util::Vector{
         this->X - other.X,
         this->Y - other.Y,
         this->Z - other.Z
     };
 }
 
-gal::Vector& gal::Vector::operator-=(const gal::Vector &other)
+gal::util::Vector& gal::util::Vector::operator-=(const gal::util::Vector &other)
 {
     this->X -= other.X;
     this->Y -= other.Y;
@@ -39,25 +39,25 @@ gal::Vector& gal::Vector::operator-=(const gal::Vector &other)
     return *this;
 }
 
-gal::Vector gal::Vector::operator/(const float n)const
+gal::util::Vector gal::util::Vector::operator/(const float n)const
 {
-    return gal::Vector{
+    return gal::util::Vector{
         this->X / n,
         this->Y / n,
         this->Z / n
     };
 }
 
-gal::Vector gal::Vector::operator*(const float n)const
+gal::util::Vector gal::util::Vector::operator*(const float n)const
 {
-    return gal::Vector{
+    return gal::util::Vector{
         this->X * n,
         this->Y * n,
         this->Z * n
     };
 }
 
-gal::Vector operator*(const float n, const gal::Vector& other)
+gal::util::Vector operator*(const float n, const gal::util::Vector& other)
 {
     return other * n;
 }
