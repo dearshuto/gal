@@ -13,3 +13,11 @@ add_executable(utah_teapot_test
 target_link_libraries(utah_teapot_test	
 	gal
 )
+
+add_executable(sphere_test
+	sphere_test.cpp
+)
+
+target_link_libraries(sphere_test
+	gal
+)
