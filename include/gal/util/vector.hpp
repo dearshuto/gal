@@ -10,6 +10,8 @@
 
 namespace gal
 {
+namespace util
+{
     //! @brief 三次元ベクトルです。
     class Vector
     {
@@ -21,7 +23,7 @@ namespace gal
         // コピー
         Vector(const Vector& other) = default;
         Vector& operator=(const Vector& other) = default;
-       
+        
         Vector(const float x, const float y, const float z);
         // 足し算
         inline Vector operator+(const Vector& other)const;
@@ -48,7 +50,8 @@ namespace gal
         float Z{ 0.0f };
     };
 }
+}
 
-gal::Vector operator*(const float n, const gal::Vector& other);
+gal::util::Vector operator*(const float n, const gal::util::Vector& other);
 
 #endif /* util_vector_hpp */

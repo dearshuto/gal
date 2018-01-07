@@ -9,6 +9,7 @@
 #include <array>
 #include <fstream>
 #include <functional>
+#include <numeric>
 #include <gal/util/vector.hpp>
 #include <gal/prim/bezier_surface.hpp>
 #include <gal/prim/utah_teapot.hpp>
@@ -360,39 +361,49 @@ constexpr std::array<std::array<float, 3>, 306> g_vertices = {{
     {1.425,-0.798,0.0}
 }};
 
-void gal::UtahTeapot::update(const std::uint64_t div, const std::uint64_t subDiv)
+void gal::prim::UtahTeapot::update(const std::uint64_t div, const std::uint64_t subDiv)
 {
     // 各部位ごとにベジエ曲面を生成し、つなぎあわせてティーポットを構成します。
     // TODO: ベジエ曲面上で制御点と一致する頂点はだぶりがあるので、それを解消する
     
     int indexStride = 0;
+    std::vector<float> vertices(0);
+    std::vector<std::uint32_t> indices(0);
     for (const Bezier16IndicesArray& bezierIndiices: g_indices)
     {
-        gal::BezierSurface bezier;
+        BezierSurface bezier;
         for (int i = 0; i < bezierIndiices.size(); i++)
         {
             const auto& kVertex = g_vertices[bezierIndiices[i]-1];
-            bezier.getControllPoint(i) = gal::Vector{kVertex[0], kVertex[1], kVertex[2]};
+            bezier.getControllPoint(i) = gal::util::Vector{kVertex[0], kVertex[1], kVertex[2]};
         }
         
         bezier.update(div, subDiv);
         
-        for (const auto& index: bezier.getMeshInices())
+        for (const auto& face: bezier.getFaces())
         {
-            const auto kVertex = bezier.getMeshVertex(index);
-            m_vertices.push_back(kVertex.Position.X);
-            m_vertices.push_back(kVertex.Position.Y);
-            m_vertices.push_back(kVertex.Position.Z);
-        }
-        
-        // 3角ポリゴンとして登録
-        const std::vector<uint64_t>& kIndeces = bezier.getMeshInices();
-        for (std::uint64_t i = 0; i < kIndeces.size(); i+=3)
-        {
-            m_indices.push_back(indexStride + i+0);
-            m_indices.push_back(indexStride + i+1);
-            m_indices.push_back(indexStride + i+2);
-        }
-        indexStride += kIndeces.size();
+            gal::ds::Vertex* pV1 = face.pHalfedge->pBegin;
+            gal::ds::Vertex* pV2 = face.pHalfedge->pNext->pBegin;
+            gal::ds::Vertex* pV3 = face.pHalfedge->pNext->pNext->pBegin;
+            
+            vertices.push_back(pV1->pLocation[0]);
+            vertices.push_back(pV1->pLocation[1]);
+            vertices.push_back(pV1->pLocation[2]);
+            
+            vertices.push_back(pV2->pLocation[0]);
+            vertices.push_back(pV2->pLocation[1]);
+            vertices.push_back(pV2->pLocation[2]);
+
+            vertices.push_back(pV3->pLocation[0]);
+            vertices.push_back(pV3->pLocation[1]);
+            vertices.push_back(pV3->pLocation[2]);
+            
+            indices.push_back(indexStride + 0);
+            indices.push_back(indexStride + 1);
+            indices.push_back(indexStride + 2);
+            indexStride += 3;
+        }        
     }
+    
+    makeHalfedge(vertices, indices);
 }

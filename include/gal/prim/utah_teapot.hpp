@@ -11,9 +11,11 @@
 
 #include <string>
 #include <vector>
-#include <gal/surface.hpp>
+#include <gal/ds/surface.hpp>
 
 namespace gal
+{
+namespace prim
 {
     //! @brief 3角ポリゴンで構成されるユタティーポッドのメッシュです。
     //! @detail
@@ -21,7 +23,7 @@ namespace gal
     //! @note
     //! update() 関数を少なくとも 1 回読んでください。
     //! 呼ばないと有効なメッシュが構成されません。
-    class UtahTeapot : public gal::Surface
+    class UtahTeapot : public gal::ds::Surface
     {
     public:
         UtahTeapot() = default;
@@ -29,9 +31,9 @@ namespace gal
         
         //! @brief 指定した分割数でメッシュを構築します。
         //! @detail Martin Newell がモデリングしたベジエ曲面の制御点からメッシュを抽出しています。
-        void update(const std::uint64_t div, const std::uint64_t subDiv);        
+        void update(const std::uint64_t div, const std::uint64_t subDiv);
     };
-
+}
 }
 
 #endif /* utah_teapot_hpp */

@@ -8,6 +8,7 @@
 
 #include <fstream>
 #include <gal/prim/utah_teapot.hpp>
+#include <gal/util/obj_serializer.hpp>
 
 //! @brief ユタ・ティーポット を書き出すサンプル兼テストです。
 //! @detail
@@ -16,25 +17,10 @@
 int main(int argc, const char * argv[])
 {
     // ユタ・ティーポットの各ベジエ曲面を 10x10 に分割して生成します。
-    gal::UtahTeapot utahTeapot;
+    gal::prim::UtahTeapot utahTeapot;
     utahTeapot.update(10, 10);
     
-    // テキストで書き出します。
-    std::ofstream obj{"utah_teapot_10x10.obj"};
-    
-    // 頂点情報の書き出し
-    auto& vertexData = utahTeapot.getVertices();
-    for (std::uint32_t i = 0; i < vertexData.size(); i+=3)
-    {
-        obj << "v " << vertexData[i] << " " << vertexData[i+1] << " " << vertexData[i+2]*1.25 << std::endl;
-    }
-    
-    // 面情報の書き出し
-    auto& indicesData = utahTeapot.getIndices();
-    for (std::uint32_t i = 0; i < indicesData.size(); i+=3)
-    {
-        obj << "f " << indicesData[i]+1 << " " << indicesData[i+1]+1 << " " << indicesData[i+2]+1 << std::endl;
-    }
+    gal::util::SaveObjToFile(utahTeapot, "utah_teapot_10x10.obj");
     
     return 0;
 }

@@ -21,3 +21,20 @@ add_executable(sphere_test
 target_link_libraries(sphere_test
 	gal
 )
+
+add_executable(cube_test
+	cube_test.cpp
+)
+
+target_link_libraries(cube_test
+	gal
+)
+
+# ベジエ曲面
+add_executable(bezier_test
+	bezier_test.cpp
+)
+
+target_link_libraries(bezier_test
+	gal
+)
