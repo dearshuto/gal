@@ -8,6 +8,7 @@
 
 #include <fstream>
 #include <gal/prim/sphere.hpp>
+#include <gal/util/obj_serializer.hpp>
 
 //! @brief 球を生成して書き出すサンプル兼テストです。
 //! @detail
@@ -19,21 +20,7 @@ int main(int argc, const char * argv[])
     gal::Sphere sphere;
     sphere.update(50 , 50);
     
-    std::ofstream obj{"sphere_50x50.obj"};
-    
-    // 頂点情報の書き出し
-    auto& vertexData = sphere.getVertices();
-    for (std::uint32_t i = 0; i < vertexData.size(); i+=3)
-    {
-        obj << "v " << vertexData[i] << " " << vertexData[i+1] << " " << vertexData[i+2] << std::endl;
-    }
-    
-    // 面情報の書き出し
-    auto& indicesData = sphere.getIndices();
-    for (std::uint32_t i = 0; i < indicesData.size(); i+=3)
-    {
-        obj << "f " << indicesData[i]+1 << " " << indicesData[i+1]+1 << " " << indicesData[i+2]+1 << std::endl;
-    }
+    gal::util::SaveObjToFile(sphere, "sphere_50x50.obj");
     
     return 0;
 }

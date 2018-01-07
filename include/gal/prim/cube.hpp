@@ -8,12 +8,12 @@
 #ifndef cube_hpp
 #define cube_hpp
 
-#include <gal/surface.hpp>
+#include <gal/ds//surface.hpp>
 
 namespace gal
 {
     //! @brief 中心が原点で1辺の長さが1のキューブ
-    class Cube : public gal::Surface
+    class Cube : public gal::ds::Surface
     {
     public:
         Cube();

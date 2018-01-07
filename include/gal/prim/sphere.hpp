@@ -9,11 +9,11 @@
 #define sphere_hpp
 
 #include <cstdint>
-#include <gal/surface.hpp>
+#include <gal/ds//surface.hpp>
 
 namespace gal
 {
-    class Sphere : public gal::Surface
+    class Sphere : public gal::ds::Surface
     {
     public:
         Sphere() = default;

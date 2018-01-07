@@ -11,7 +11,7 @@
 
 #include <string>
 #include <vector>
-#include <gal/surface.hpp>
+#include <gal/ds/surface.hpp>
 
 namespace gal
 {
@@ -21,7 +21,7 @@ namespace gal
     //! @note
     //! update() 関数を少なくとも 1 回読んでください。
     //! 呼ばないと有効なメッシュが構成されません。
-    class UtahTeapot : public gal::Surface
+    class UtahTeapot : public gal::ds::Surface
     {
     public:
         UtahTeapot() = default;

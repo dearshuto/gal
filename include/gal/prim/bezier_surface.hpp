@@ -12,14 +12,14 @@
 #include <array>
 #include <cstdint>
 #include <vector>
-#include <gal/surface.hpp>
+#include <gal/ds/surface.hpp>
 #include <gal/util/vector.hpp>
 
 namespace gal {
     
     //! @brief 16 個の制御点から生成される 3 次ベジエ曲面
     //! @brief 生成されるメッシュデータは 3 角ポリゴンで構成されています。
-    class BezierSurface : public gal::Surface
+    class BezierSurface : public gal::ds::Surface
     {
     public:
         BezierSurface() = default;
@@ -50,17 +50,7 @@ namespace gal {
         {
             return m_controllPoints[index];
         }
-        
-        const gal::Vertex& getMeshVertex(const uint64_t index)
-        {
-            return m_vertices[index];
-        }
-        
-        const std::vector<uint64_t>& getMeshInices()const
-        {
-            return m_indices;
-        }
-        
+                        
     private:
         
         /* 制御点の順番はこんな感じ
@@ -70,9 +60,6 @@ namespace gal {
          12--13--14--15
          */
         std::array<gal::Vector, 16> m_controllPoints;
-        
-        std::vector<uint64_t> m_indices;
-        std::vector<gal::Vertex> m_vertices;
     };
 }
 
