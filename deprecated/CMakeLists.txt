@@ -1,5 +1,5 @@
+cmake_minimum_required(VERSION 3.11)
 PROJECT(GeometryAlgorithmLibrary)
-cmake_minimum_required(VERSION 3.0)
 
 ## 実行ファイルの出力ディレクトリの設定
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
