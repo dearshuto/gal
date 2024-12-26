@@ -6,8 +6,7 @@
 
 ## How to Build
 必要なもの
-* C++11 対応のコンパイラ
-* cmake 3.0  
+* Latest rust toolchain
 
 ## Lisence
 WTFPL
