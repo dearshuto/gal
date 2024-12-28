@@ -1,3 +1,4 @@
+mod bezier_surface;
 mod builder;
 mod cube;
 mod sphere;
