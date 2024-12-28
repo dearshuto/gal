@@ -1,4 +1,7 @@
-use super::{cube::CubeBuilder, sphere::SphereBuilder, triangulated_mesh::TriangulatedMesh};
+use super::{
+    bezier_surface::BezierSurfaceBuilder, cube::CubeBuilder, sphere::SphereBuilder,
+    triangulated_mesh::TriangulatedMesh,
+};
 
 pub trait IParametricBuilder {
     type Params;
@@ -47,6 +50,14 @@ impl Builder<SphereBuilder> {
     pub fn sphere() -> Builder<SphereBuilder> {
         Self {
             internal: SphereBuilder {},
+        }
+    }
+}
+
+impl Builder<BezierSurfaceBuilder> {
+    pub fn bezier() -> Builder<BezierSurfaceBuilder> {
+        Self {
+            internal: BezierSurfaceBuilder::new(),
         }
     }
 }
