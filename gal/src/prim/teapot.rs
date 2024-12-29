@@ -410,11 +410,31 @@ static VERTICES: [(f64, f64, f64); 306] = [
     (1.425, -0.798, 0.0),
 ];
 
-pub struct TeapotBuilder;
+pub struct TeapotBuilder {
+    div: usize,
+    sub_div: usize,
+}
 
 impl TeapotBuilder {
     pub fn new() -> Self {
-        Self {}
+        Self {
+            div: 10,
+            sub_div: 10,
+        }
+    }
+}
+
+impl IParametricBuilder for TeapotBuilder {
+    type Params = (usize, usize);
+
+    fn params<F>(mut self, func: F) -> Self
+    where
+        F: FnOnce(Self::Params) -> Self::Params,
+    {
+        let (div, sub_div) = func((self.div, self.sub_div));
+        self.div = div;
+        self.sub_div = sub_div;
+        self
     }
 }
 
@@ -427,7 +447,7 @@ impl ITriangulatedBuilder for TeapotBuilder {
         let mut vertices = Vec::default();
         let mut indices = Vec::default();
         for bezier_indices in INDICES {
-            let bezier_surface = BezierSurfaceBuilder::new()
+            let bezier_surface = BezierSurfaceBuilder::new_with_div(self.div, self.sub_div)
                 .params(|mut x| {
                     for i in 0..bezier_indices.len() {
                         let vertex = &VERTICES[bezier_indices[i as usize] as usize - 1];

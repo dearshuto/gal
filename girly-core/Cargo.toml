@@ -1,0 +1,12 @@
+[package]
+name = "girly-core"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default = ["eframe"]
+
+[dependencies]
+gal = { path = "../gal" }
+
+eframe = { version = "0.30", optional = true }

@@ -11,6 +11,9 @@ pub struct BezierSurfaceBuilder {
     12--13--14--15
     */
     control_points: [(f32, f32, f32); 16],
+
+    div: usize,
+    sub_div: usize,
 }
 
 impl IParametricBuilder for BezierSurfaceBuilder {
@@ -27,6 +30,10 @@ impl IParametricBuilder for BezierSurfaceBuilder {
 
 impl BezierSurfaceBuilder {
     pub fn new() -> Self {
+        Self::new_with_div(10, 10)
+    }
+
+    pub fn new_with_div(div: usize, sub_div: usize) -> Self {
         BezierSurfaceBuilder {
             control_points: [
                 (0.0f32, 0.0f32, 0.0f32),
@@ -46,6 +53,8 @@ impl BezierSurfaceBuilder {
                 (2.0 / 3.0f32, 1.0f32, 0.0f32),
                 (1.0f32, 1.0f32, 0.0f32),
             ],
+            div,
+            sub_div,
         }
     }
 
@@ -73,8 +82,8 @@ impl ITriangulatedBuilder for BezierSurfaceBuilder {
 
         // たてよこの頂点数を取得。
         // 両端に頂点があるので +2 してます。
-        let div = 10;
-        let sub_div = 10;
+        let div = self.div;
+        let sub_div = self.sub_div;
         let v_count = div + 1;
         let u_count = sub_div + 1;
 

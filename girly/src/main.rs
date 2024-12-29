@@ -1,3 +1,3 @@
 fn main() {
-    println!("Hello, world!");
+    girly_core::egui::App::run();
 }
