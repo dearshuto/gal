@@ -4,4 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-gal = {path = "../gal"}
+gal = { path = "../gal" }
+
+kiss3d = "0.35"
