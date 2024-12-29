@@ -1,6 +1,6 @@
 use super::{
     bezier_surface::BezierSurfaceBuilder, cube::CubeBuilder, sphere::SphereBuilder,
-    triangulated_mesh::TriangulatedMesh,
+    teapot::TeapotBuilder, triangulated_mesh::TriangulatedMesh,
 };
 
 pub trait IParametricBuilder {
@@ -58,6 +58,14 @@ impl Builder<BezierSurfaceBuilder> {
     pub fn bezier() -> Builder<BezierSurfaceBuilder> {
         Self {
             internal: BezierSurfaceBuilder::new(),
+        }
+    }
+}
+
+impl Builder<TeapotBuilder> {
+    pub fn teapot() -> Builder<TeapotBuilder> {
+        Self {
+            internal: TeapotBuilder::new(),
         }
     }
 }

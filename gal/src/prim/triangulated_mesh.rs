@@ -5,6 +5,12 @@ pub struct TriangulatedMesh {
     indices: Vec<(usize, usize, usize)>,
 }
 
+impl TriangulatedMesh {
+    pub fn vertex(&self, index: usize) -> (f64, f64, f64) {
+        self.vertices[index]
+    }
+}
+
 impl From<(&[f64], &[usize])> for TriangulatedMesh {
     fn from(value: (&[f64], &[usize])) -> Self {
         TriangulatedMesh {
