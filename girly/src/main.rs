@@ -35,6 +35,11 @@ fn main() {
         UnitQuaternion::from_axis_angle(&Vector3::x_axis(), -std::f32::consts::PI / 2.0);
     c.set_local_rotation(fixed_rotation);
 
+    // ワイヤーフレーム描画
+    c.set_points_size(10.0);
+    c.set_lines_width(1.0);
+    c.set_surface_rendering_activation(false);
+
     let rot = UnitQuaternion::from_axis_angle(&Vector3::z_axis(), 0.014);
 
     while window.render() {
