@@ -2,6 +2,7 @@ mod bezier_surface;
 mod builder;
 mod cube;
 mod sphere;
+mod teapot;
 mod traits;
 mod triangulated_mesh;
 
