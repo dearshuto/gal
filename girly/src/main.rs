@@ -1,6 +1,9 @@
 use std::borrow::Cow;
 
-use winit::{application::ApplicationHandler, raw_window_handle::HasDisplayHandle};
+use winit::{
+    application::ApplicationHandler,
+    raw_window_handle::{self, HasDisplayHandle, HasWindowHandle},
+};
 
 fn main() {
     let event_loop = winit::event_loop::EventLoop::builder().build().unwrap();
@@ -10,8 +13,14 @@ fn main() {
 struct Graphics {
     entry: ash::Entry,
     instance: ash::Instance,
+
+    // デバッグ
     debug_util_instance: ash::ext::debug_utils::Instance,
     debug_utils_messenger: ash::vk::DebugUtilsMessengerEXT,
+
+    // サーフェイス
+    surface_instance: ash::khr::surface::Instance,
+    surface: ash::vk::SurfaceKHR,
 }
 
 struct App {
@@ -33,6 +42,12 @@ impl Drop for App {
         if let Some(graphics) = &self.graphics {
             unsafe {
                 graphics
+                    .surface_instance
+                    .destroy_surface(graphics.surface, None)
+            }
+
+            unsafe {
+                graphics
                     .debug_util_instance
                     .destroy_debug_utils_messenger(graphics.debug_utils_messenger, None)
             }
@@ -47,6 +62,9 @@ impl ApplicationHandler for App {
         let window_attributes = winit::window::WindowAttributes::default();
         let window = event_loop.create_window(window_attributes).unwrap();
 
+        let raw_window_handle = window.window_handle().unwrap().as_raw();
+        let raw_display_handle = window.display_handle().unwrap().as_raw();
+
         let entry = ash::Entry::linked();
         let instance = {
             let app_info = ash::vk::ApplicationInfo::default()
@@ -55,7 +73,6 @@ impl ApplicationHandler for App {
                 .application_version(0)
                 .api_version(ash::vk::API_VERSION_1_3);
 
-            let display_handle = window.display_handle().unwrap().as_raw();
             let extension_names: Vec<_> = [
                 ash::ext::debug_utils::NAME.as_ptr(),
                 #[cfg(any(target_os = "macos", target_os = "ios"))]
@@ -64,7 +81,7 @@ impl ApplicationHandler for App {
                 ash::khr::portability_enumeration::NAME.as_ptr(),
             ]
             .iter()
-            .chain(ash_window::enumerate_required_extensions(display_handle).unwrap())
+            .chain(ash_window::enumerate_required_extensions(raw_display_handle).unwrap())
             .map(|x| *x)
             .collect();
 
@@ -84,8 +101,8 @@ impl ApplicationHandler for App {
             unsafe { entry.create_instance(&create_info, None) }.unwrap()
         };
 
+        // デバッグ
         let debug_util_instance = ash::ext::debug_utils::Instance::new(&entry, &instance);
-
         let debug_utils_messenger = unsafe {
             let create_info = ash::vk::DebugUtilsMessengerCreateInfoEXT::default()
                 .message_severity(
@@ -102,11 +119,59 @@ impl ApplicationHandler for App {
         }
         .unwrap();
 
+        // サーフェイス
+        let surface = unsafe {
+            ash_window::create_surface(
+                &entry,
+                &instance,
+                raw_display_handle,
+                raw_window_handle,
+                None,
+            )
+        }
+        .unwrap();
+        let surface_instance = ash::khr::surface::Instance::new(&entry, &instance);
+
+        // 物理デバイスの検索
+        let (_physical_device, _queue_family_index) =
+            unsafe { instance.enumerate_physical_devices() }
+                .unwrap()
+                .iter()
+                .find_map(|physical_device| {
+                    unsafe {
+                        instance.get_physical_device_queue_family_properties(*physical_device)
+                    }
+                    .iter()
+                    .enumerate()
+                    .find_map(|(index, info)| {
+                        if !info.queue_flags.contains(ash::vk::QueueFlags::GRAPHICS) {
+                            return None;
+                        }
+
+                        if !unsafe {
+                            surface_instance.get_physical_device_surface_support(
+                                *physical_device,
+                                index as u32,
+                                surface,
+                            )
+                        }
+                        .unwrap()
+                        {
+                            return None;
+                        }
+
+                        Some((*physical_device, index))
+                    })
+                })
+                .unwrap();
+
         self.graphics = Some(Graphics {
             entry,
             instance,
             debug_util_instance,
             debug_utils_messenger,
+            surface_instance,
+            surface,
         });
 
         self.window = Some(window);
