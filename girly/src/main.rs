@@ -1,3 +1,99 @@
+use winit::{application::ApplicationHandler, raw_window_handle::HasDisplayHandle};
+
 fn main() {
-    println!("Hello, world!");
+    let event_loop = winit::event_loop::EventLoop::builder().build().unwrap();
+    event_loop.run_app(&mut App::new()).unwrap();
+}
+
+struct Graphics {
+    entry: ash::Entry,
+    instance: ash::Instance,
+    debug_util_instance: ash::ext::debug_utils::Instance,
+}
+
+struct App {
+    window: Option<winit::window::Window>,
+    graphics: Option<Graphics>,
+}
+
+impl App {
+    pub fn new() -> Self {
+        Self {
+            window: None,
+            graphics: None,
+        }
+    }
+}
+
+impl Drop for App {
+    fn drop(&mut self) {
+        if let Some(graphics) = &self.graphics {
+            unsafe { graphics.instance.destroy_instance(None) }
+        }
+    }
+}
+
+impl ApplicationHandler for App {
+    fn resumed(&mut self, event_loop: &winit::event_loop::ActiveEventLoop) {
+        let window_attributes = winit::window::WindowAttributes::default();
+        let window = event_loop.create_window(window_attributes).unwrap();
+
+        let entry = ash::Entry::linked();
+        let instance = {
+            let app_info = ash::vk::ApplicationInfo::default()
+                .application_name(c"Girly")
+                .engine_name(c"Girly")
+                .application_version(0)
+                .api_version(ash::vk::API_VERSION_1_3);
+
+            let display_handle = window.display_handle().unwrap().as_raw();
+            let extension_names: Vec<_> = [
+                ash::ext::debug_utils::NAME.as_ptr(),
+                #[cfg(any(target_os = "macos", target_os = "ios"))]
+                ash::khr::get_physical_device_properties2::NAME.as_ptr(),
+                #[cfg(any(target_os = "macos", target_os = "ios"))]
+                ash::khr::portability_enumeration::NAME.as_ptr(),
+            ]
+            .iter()
+            .chain(ash_window::enumerate_required_extensions(display_handle).unwrap())
+            .map(|x| *x)
+            .collect();
+
+            let create_flags = if cfg!(any(target_os = "macos", target_os = "ios")) {
+                ash::vk::InstanceCreateFlags::ENUMERATE_PORTABILITY_KHR
+            } else {
+                ash::vk::InstanceCreateFlags::default()
+            };
+
+            let layer_names = [c"VK_LAYER_KHRONOS_validation".as_ptr()];
+            let create_info = ash::vk::InstanceCreateInfo::default()
+                .application_info(&app_info)
+                .enabled_layer_names(&layer_names)
+                .enabled_extension_names(&extension_names)
+                .flags(create_flags);
+
+            unsafe { entry.create_instance(&create_info, None) }.unwrap()
+        };
+
+        let debug_util_instance = ash::ext::debug_utils::Instance::new(&entry, &instance);
+
+        self.graphics = Some(Graphics {
+            entry,
+            instance,
+            debug_util_instance,
+        });
+
+        self.window = Some(window);
+    }
+
+    fn window_event(
+        &mut self,
+        event_loop: &winit::event_loop::ActiveEventLoop,
+        _window_id: winit::window::WindowId,
+        event: winit::event::WindowEvent,
+    ) {
+        if let winit::event::WindowEvent::CloseRequested = event {
+            event_loop.exit();
+        }
+    }
 }

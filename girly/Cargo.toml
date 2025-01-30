@@ -5,3 +5,7 @@ edition = "2021"
 
 [dependencies]
 gal = {path = "../gal"}
+
+ash = {version =  "0.38.0", default-features = false, features = ["linked", "debug", "std"]}
+ash-window = "*"
+winit = "0.30.8"
