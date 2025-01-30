@@ -1,3 +1,5 @@
+use std::borrow::Cow;
+
 use winit::{application::ApplicationHandler, raw_window_handle::HasDisplayHandle};
 
 fn main() {
@@ -9,6 +11,7 @@ struct Graphics {
     entry: ash::Entry,
     instance: ash::Instance,
     debug_util_instance: ash::ext::debug_utils::Instance,
+    debug_utils_messenger: ash::vk::DebugUtilsMessengerEXT,
 }
 
 struct App {
@@ -28,6 +31,12 @@ impl App {
 impl Drop for App {
     fn drop(&mut self) {
         if let Some(graphics) = &self.graphics {
+            unsafe {
+                graphics
+                    .debug_util_instance
+                    .destroy_debug_utils_messenger(graphics.debug_utils_messenger, None)
+            }
+
             unsafe { graphics.instance.destroy_instance(None) }
         }
     }
@@ -77,10 +86,27 @@ impl ApplicationHandler for App {
 
         let debug_util_instance = ash::ext::debug_utils::Instance::new(&entry, &instance);
 
+        let debug_utils_messenger = unsafe {
+            let create_info = ash::vk::DebugUtilsMessengerCreateInfoEXT::default()
+                .message_severity(
+                    ash::vk::DebugUtilsMessageSeverityFlagsEXT::ERROR
+                        | ash::vk::DebugUtilsMessageSeverityFlagsEXT::WARNING,
+                )
+                .message_type(
+                    ash::vk::DebugUtilsMessageTypeFlagsEXT::GENERAL
+                        | ash::vk::DebugUtilsMessageTypeFlagsEXT::VALIDATION
+                        | ash::vk::DebugUtilsMessageTypeFlagsEXT::PERFORMANCE,
+                )
+                .pfn_user_callback(Some(vulkan_debug_callback));
+            debug_util_instance.create_debug_utils_messenger(&create_info, None)
+        }
+        .unwrap();
+
         self.graphics = Some(Graphics {
             entry,
             instance,
             debug_util_instance,
+            debug_utils_messenger,
         });
 
         self.window = Some(window);
@@ -96,4 +122,32 @@ impl ApplicationHandler for App {
             event_loop.exit();
         }
     }
+}
+
+unsafe extern "system" fn vulkan_debug_callback(
+    message_severity: ash::vk::DebugUtilsMessageSeverityFlagsEXT,
+    message_type: ash::vk::DebugUtilsMessageTypeFlagsEXT,
+    p_callback_data: *const ash::vk::DebugUtilsMessengerCallbackDataEXT<'_>,
+    _user_data: *mut std::os::raw::c_void,
+) -> ash::vk::Bool32 {
+    let callback_data = *p_callback_data;
+    let message_id_number = callback_data.message_id_number;
+
+    let message_id_name = if callback_data.p_message_id_name.is_null() {
+        Cow::from("")
+    } else {
+        std::ffi::CStr::from_ptr(callback_data.p_message_id_name).to_string_lossy()
+    };
+
+    let message = if callback_data.p_message.is_null() {
+        Cow::from("")
+    } else {
+        std::ffi::CStr::from_ptr(callback_data.p_message).to_string_lossy()
+    };
+
+    println!(
+        "{message_severity:?}:\n{message_type:?} [{message_id_name} ({message_id_number})] : {message}\n",
+    );
+
+    ash::vk::FALSE
 }
