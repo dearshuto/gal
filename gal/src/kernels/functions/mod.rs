@@ -1,3 +1,7 @@
+mod collinear;
+
+pub use collinear::{collinear, collinear_with, ICollinearObject};
+
 use std::ops::{Div, Mul};
 
 use super::{traits::IArcCos, IDot, INorm};

@@ -1,4 +1,4 @@
-use crate::kernels::{IDot, INorm};
+use crate::kernels::{ICross, IDot, INorm};
 
 impl<T> IDot<T> for nalgebra::Vector2<T>
 where
@@ -24,6 +24,18 @@ where
 {
     fn dot(&self, lhs: &Self) -> T {
         self.dot(lhs)
+    }
+}
+
+impl<T> ICross for nalgebra::Vector3<T>
+where
+    T: nalgebra::Scalar
+        + nalgebra::ClosedAddAssign
+        + nalgebra::ClosedMulAssign
+        + nalgebra::ClosedSubAssign,
+{
+    fn cross(&self, other: &Self) -> Self {
+        self.cross(other)
     }
 }
 
