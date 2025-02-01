@@ -1,3 +1,11 @@
+pub trait IPoint2<T> {
+    fn new(x: T, y: T) -> Self;
+}
+
+pub trait IPoint3<T> {
+    fn new(x: T, y: T, z: T) -> Self;
+}
+
 pub trait IVector2<T> {
     fn new(x: T, y: T) -> Self;
 }
@@ -20,6 +28,10 @@ pub trait IVectorAccessorZ<T: Clone> {
 
 pub trait IDot<T> {
     fn dot(&self, lhs: &Self) -> T;
+}
+
+pub trait ICross {
+    fn cross(&self, other: &Self) -> Self;
 }
 
 pub trait INorm<T> {
