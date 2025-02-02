@@ -4,22 +4,6 @@ pub trait ILine<T: Clone> {
     fn c(&self) -> T;
 }
 
-pub trait IPoint2<T> {
-    fn new(x: T, y: T) -> Self;
-}
-
-pub trait IPoint3<T> {
-    fn new(x: T, y: T, z: T) -> Self;
-}
-
-pub trait IVector2<T> {
-    fn new(x: T, y: T) -> Self;
-}
-
-pub trait IVector3<T> {
-    fn new(x: T, y: T, z: T) -> Self;
-}
-
 pub trait IVectorAccessorX<T: Clone> {
     fn x(&self) -> T;
 }
