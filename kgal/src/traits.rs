@@ -16,6 +16,12 @@ pub trait IVectorAccessorZ<T: Clone> {
     fn z(&self) -> T;
 }
 
+pub trait ICompareX {
+    type Type;
+
+    fn has_greater_x_than(&self, other: &Self::Type) -> bool;
+}
+
 pub trait IDot<T> {
     fn dot(&self, lhs: &Self) -> T;
 }

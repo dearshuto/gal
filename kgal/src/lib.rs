@@ -7,5 +7,6 @@ pub use functions::{
 };
 
 pub use traits::{
-    ICross, IDot, ILine, INorm, ISqrt, IVectorAccessorX, IVectorAccessorY, IVectorAccessorZ,
+    ICompareX, ICross, IDot, ILine, INorm, ISqrt, IVectorAccessorX, IVectorAccessorY,
+    IVectorAccessorZ,
 };
