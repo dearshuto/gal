@@ -1,3 +1,9 @@
+pub trait ILine<T: Clone> {
+    fn a(&self) -> T;
+    fn b(&self) -> T;
+    fn c(&self) -> T;
+}
+
 pub trait IPoint2<T> {
     fn new(x: T, y: T) -> Self;
 }
@@ -38,8 +44,24 @@ pub trait INorm<T> {
     fn norm(&self) -> T;
 }
 
+pub trait ISqrt<T> {
+    fn sqrt(self) -> T;
+}
+
 pub trait IArcCos<T> {
     fn acos(self) -> T;
+}
+
+impl ISqrt<f32> for f32 {
+    fn sqrt(self) -> f32 {
+        self.sqrt()
+    }
+}
+
+impl ISqrt<f64> for f64 {
+    fn sqrt(self) -> f64 {
+        self.sqrt()
+    }
 }
 
 impl IArcCos<f32> for f32 {
