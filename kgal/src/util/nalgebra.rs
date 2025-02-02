@@ -1,4 +1,4 @@
-use crate::{ICross, IDot, INorm, IVectorAccessorX, IVectorAccessorY};
+use crate::{ICompareX, ICross, IDot, INorm, IVectorAccessorX, IVectorAccessorY};
 
 impl<T: Clone> IVectorAccessorX<T> for nalgebra::Vector2<T> {
     fn x(&self) -> T {
@@ -11,6 +11,17 @@ impl<T: Clone> IVectorAccessorY<T> for nalgebra::Vector2<T> {
     fn y(&self) -> T {
         let v = &self.data.0[0];
         v[1].clone()
+    }
+}
+
+impl<T> ICompareX for nalgebra::Vector2<T>
+where
+    T: PartialOrd<T>,
+{
+    type Type = Self;
+
+    fn has_greater_x_than(&self, other: &Self) -> bool {
+        self.data.as_slice()[0] > other.data.as_slice()[0]
     }
 }
 

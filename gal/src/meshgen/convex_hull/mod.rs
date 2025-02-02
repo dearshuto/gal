@@ -1,6 +1,6 @@
 use std::ops::{Add, Div, Mul, Sub};
 
-use kgal::{distance_2, ILine, ISqrt, IVectorAccessorX, IVectorAccessorY};
+use kgal::{distance_2, ICompareX, ILine, ISqrt, IVectorAccessorX, IVectorAccessorY};
 
 struct Line<T, TPoint>
 where
@@ -90,16 +90,16 @@ where
         + num::Zero
         + PartialOrd,
     TIterator: Iterator<Item = TPoint> + Clone,
-    TPoint: IVectorAccessorX<T> + IVectorAccessorY<T> + Copy,
+    TPoint: IVectorAccessorX<T> + IVectorAccessorY<T> + ICompareX<Type = TPoint> + Copy,
 {
     let mut separeted_points = Vec::default();
     let mut edge_points = [points.next().unwrap(), points.next().unwrap()];
     for point in points {
-        if point.x() < edge_points[0].x() {
+        if edge_points[0].has_greater_x_than(&point) {
             let mut point = point;
             std::mem::swap(&mut point, &mut edge_points[0]);
             separeted_points.push(point);
-        } else if edge_points[1].x() < point.x() {
+        } else if point.has_greater_x_than(&edge_points[1]) {
             let mut point = point;
             std::mem::swap(&mut point, &mut edge_points[1]);
             separeted_points.push(point);
