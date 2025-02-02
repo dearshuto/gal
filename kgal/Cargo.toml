@@ -1,13 +1,9 @@
 [package]
-name = "gal"
+name = "kgal"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-kgal = { path = "../kgal" }
-
 nalgebra = "0.33"
 num = "*"
 num-traits = "*"
-obj-exporter = "*"
-

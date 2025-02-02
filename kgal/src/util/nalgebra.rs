@@ -1,4 +1,4 @@
-use crate::kernels::{ICross, IDot, INorm, IVectorAccessorX, IVectorAccessorY};
+use crate::{ICross, IDot, INorm, IVectorAccessorX, IVectorAccessorY};
 
 impl<T: Clone> IVectorAccessorX<T> for nalgebra::Vector2<T> {
     fn x(&self) -> T {

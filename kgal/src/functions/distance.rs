@@ -1,6 +1,6 @@
 use std::ops::{Add, Div, Mul};
 
-use crate::kernels::{
+use crate::{
     traits::{ILine, ISqrt},
     IVectorAccessorX, IVectorAccessorY,
 };

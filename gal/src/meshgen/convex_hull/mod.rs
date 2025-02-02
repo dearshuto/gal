@@ -1,6 +1,6 @@
 use std::ops::{Add, Div, Mul, Sub};
 
-use crate::kernels::{distance_2, ILine, ISqrt, IVectorAccessorX, IVectorAccessorY};
+use kgal::{distance_2, ILine, ISqrt, IVectorAccessorX, IVectorAccessorY};
 
 struct Line<T, TPoint>
 where

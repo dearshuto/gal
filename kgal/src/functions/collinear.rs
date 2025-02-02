@@ -1,6 +1,6 @@
 use std::ops::Sub;
 
-use crate::kernels::traits::ICross;
+use crate::traits::ICross;
 
 pub trait ICollinearObject {
     type Point;

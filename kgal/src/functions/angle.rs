@@ -1,6 +1,6 @@
 use std::ops::{Div, Mul};
 
-use crate::kernels::{traits::IArcCos, IDot, INorm};
+use crate::{traits::IArcCos, IDot, INorm};
 
 pub trait IAngleObject {
     type Output;
