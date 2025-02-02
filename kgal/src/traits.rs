@@ -35,27 +35,3 @@ pub trait ISqrt<T> {
 pub trait IArcCos<T> {
     fn acos(self) -> T;
 }
-
-impl ISqrt<f32> for f32 {
-    fn sqrt(self) -> f32 {
-        self.sqrt()
-    }
-}
-
-impl ISqrt<f64> for f64 {
-    fn sqrt(self) -> f64 {
-        self.sqrt()
-    }
-}
-
-impl IArcCos<f32> for f32 {
-    fn acos(self) -> f32 {
-        self.acos()
-    }
-}
-
-impl IArcCos<f64> for f64 {
-    fn acos(self) -> f64 {
-        self.acos()
-    }
-}
