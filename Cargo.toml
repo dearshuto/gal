@@ -1,3 +1,3 @@
 [workspace]
 resolver = "2"
-members = ["gal", "girly", "kgal"]
+members = ["gal", "girly/src-tauri", "kgal"]
